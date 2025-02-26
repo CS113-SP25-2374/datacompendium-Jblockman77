@@ -1,3 +1,5 @@
+package CS113;
+
 public interface IteratorInterface<E> {
     /**
      * Checks to see if a next element exists
