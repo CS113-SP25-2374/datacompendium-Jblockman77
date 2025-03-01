@@ -10,6 +10,32 @@ public class LinkedListRL<E> implements ListInterface<E>{
         }
     }
 
+    private class Iterator<E> implements IteratorInterface<E> {
+        private Node<E> curr;
+        private LinkedListRL<E> linkedListRL;
+
+        private Iterator(LinkedListRL<E> linkedListRL){
+            this.linkedListRL = linkedListRL;
+            curr = (Node<E>) linkedListRL.head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return curr.next != null;
+        }
+
+        @Override
+        public E next() {
+            curr = curr.next;
+            return curr.element;
+        }
+
+        @Override
+        public void remove() {
+            linkedListRL.remove((LinkedListRL<E>.Node<E>) curr);
+        }
+    }
+
     private Node<E> head;
     private Node<E> tail;
     private int count;
