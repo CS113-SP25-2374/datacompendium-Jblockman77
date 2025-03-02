@@ -45,14 +45,13 @@ public class LinkedListRL<E> implements ListInterface<E>{
         Node<E> newNode = new Node<>(element);
             if(head == null){
                 head = newNode;
-                tail = newNode;
             }else{
                 tail.next = newNode;
                 newNode.prev = tail;
-                tail = newNode;
             }
-            count++;
-            return true;
+        tail = newNode;
+        count++;
+        return true;
 
     }
 
@@ -62,12 +61,11 @@ public class LinkedListRL<E> implements ListInterface<E>{
             Node<E> newNode = new Node<>(element);
             if(curr == head){
                 head = newNode;
-                newNode.next = curr;
             } else{
                 curr.prev.next = newNode;
-                newNode.next = curr;
             }
-            count++;
+        newNode.next = curr;
+        count++;
         }
 
     @Override
