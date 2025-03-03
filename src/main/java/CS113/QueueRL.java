@@ -10,19 +10,23 @@ public class QueueRL<E> implements QueueInterface<E>{
         }
     }
     private Node<E> head;
+    private Node<E> tail;
     private int count;
 
     @Override
     public E push(E element) {
         Node<E> node = new Node<>(element);
-        if (head != null) {
-            head.prev = node;
-            node.next = head;
+        if(head == null){
+            head = node;
+            tail = node;
+        } else {
+            node.prev = tail;
+            tail.next = node;
+            tail = node;
         }
-        head = node;
         count++;
         return head.element;
-    }
+        }
 
     @Override
     public E peek() {
@@ -32,7 +36,8 @@ public class QueueRL<E> implements QueueInterface<E>{
     @Override
     public E pop() {
         Node<E> node = new Node<>(head.element);
-        head = head.prev;
+        head = head.next;
+        head.prev = null;
         count--;
         return node.element;
     }
@@ -52,10 +57,10 @@ public class QueueRL<E> implements QueueInterface<E>{
         Node<E> curr = head;
         while (curr != null){
             sen.append(curr.element);
-            if(curr.prev != null){
+            if(curr.next != null){
                 sen.append(", ");
             }
-            curr = curr.prev;
+            curr = curr.next;
         }
         sen.append("]");
         return sen.toString();
