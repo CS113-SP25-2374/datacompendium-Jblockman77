@@ -1,168 +1,178 @@
 package CS113;
 
-public class LinkedListRL<E> implements ListInterface<E>, IterableInterface<E>{
-
+public class LinkedListRL<E> implements ListInterface<E>{
     private class Node<E>{
-        E element;
-        Node<E> prev;
-        Node<E> next;
+        private E element;
+        private Node<E> next;
+        private Node<E> prev;
         private Node(E element){
             this.element = element;
         }
     }
 
-    private class Iterator<E> implements IteratorInterface{
-        LinkedListRL<E>.Node<E> curr;
-        LinkedListRL<E> list;
+    private class Iterator<E> implements IteratorInterface<E> {
+        private Node<E> curr;
+        private LinkedListRL<E> linkedListRL;
 
-        private Iterator(LinkedListRL<E> parentList){
-            list = parentList;
-            curr = list.head;
+        private Iterator(LinkedListRL<E> linkedListRL){
+            this.linkedListRL = linkedListRL;
+            curr = (Node<E>) linkedListRL.head;
         }
 
         @Override
         public boolean hasNext() {
-            return curr != null;
+            return curr.next != null;
         }
 
         @Override
-        public Object next() {
-            LinkedListRL<E>.Node<E> temp = curr;
+        public E next() {
             curr = curr.next;
-            return temp.element;
+            return curr.element;
         }
 
         @Override
         public void remove() {
-            if(list.head == null) throw new IllegalStateException();
-
-            if(curr != null){
-                list.unLink(curr);
-            }
-
-            list.unLink(curr);
-
+            linkedListRL.remove((LinkedListRL<E>.Node<E>) curr);
         }
     }
 
-    Node<E> head;
-    Node<E> tail;
-    int size;
-    private Node<E> getAt(int index){
-        if(index >= size || index < 0) throw new IndexOutOfBoundsException();
+    private Node<E> head;
+    private Node<E> tail;
+    private int count;
 
+    @Override
+    public boolean add(E element) {
+        Node<E> newNode = new Node<>(element);
+            if(head == null){
+                head = newNode;
+            }else{
+                tail.next = newNode;
+                newNode.prev = tail;
+            }
+        tail = newNode;
+        count++;
+        return true;
+
+    }
+
+    @Override
+    public void add(int index, E element) {
+        Node<E> curr = find(index);
+            Node<E> newNode = new Node<>(element);
+            if(curr == head){
+                head = newNode;
+            } else{
+                curr.prev.next = newNode;
+            }
+        newNode.next = curr;
+        count++;
+        }
+
+    @Override
+    public void clear() {
+        while(head != null) {
+            remove(0);
+        }
+        count = 0;
+    }
+
+    @Override
+    public boolean contains(E element) {
+        return goTo(element) != null;
+    }
+
+    @Override
+    public int indexOf(Object object) {
         Node<E> curr = head;
-        for(int i = 0; i < index; i++){
+        int i =0;
+            while(curr != null){
+                if(curr.element.equals(object)){
+                    return i;
+                }
+                i++;
+                curr = curr.next;
+            }
+
+        return -1;
+    }
+
+    private Node<E> find(int index) {
+        Node<E> curr = head;
+        int i = 0;
+        while (++i <= index && curr != null) {
             curr = curr.next;
         }
         return curr;
     }
 
-    @Override
-    public boolean add(E element) {
-        Node<E> node = new Node<>(element);
-        size++;
-        if(head == null){
-            head = tail = node;
-            return true;
+    private Node<E> goTo(E element){
+        Node<E> curr = head;
+        while (curr != null){
+            if(curr.element.equals(element)){
+                return curr;
+            }
+            curr = curr.next;
         }
-
-        tail.next = node;
-        node.prev = tail;
-        tail = node;
-
-        return true;
+        return null;
     }
 
-    private void unLink(Node<E> node){
-        Node<E> curr = node;
-        Node<E> prev = curr.prev;
-        Node<E> next = curr.next;
-        size--;
-        if(curr == head){
+    private boolean remove(Node<E> curr){
+        if(curr.prev != null){
+            curr.prev.next = curr.next;
+        }else {
             head = curr.next;
         }
-        if(curr == tail){
+        if(curr.next != null){
+            curr.next.prev = curr.prev;
+        }else {
             tail = curr.prev;
         }
-        if(prev != null){
-            prev.next = next;
-        }
-        if(head != null){
-            head.prev = prev;
-        }
-    }
-
-    @Override
-    public void add(int index, E element) {
-        Node<E> node = new Node<>(element);
-        Node<E> curr = getAt(index);
-        size++;
-
-        node.next = curr.next;
-        curr.next = node;
-        node.prev = curr;
-        if(node.next != null){
-            node.next.prev = node;
-        }
-    }
-
-    @Override
-    public void clear() {
-        while (size != 0){
-            remove(size);
-            size--;
-        }
-    }
-
-    @Override
-    public boolean contains(E element) {
-        if(head == null) return false;
-        int count = 0;
-        while(count != size){
-            if()
-        }
-    }
-
-    @Override
-    public int indexOf(Object object) {
-        return 0;
+        count--;
+        return true;
     }
 
     @Override
     public E get(int index) {
-        return null;
+        return find(index).element;
     }
 
     @Override
     public boolean isEmpty() {
-        return (head==null);
+        return head == null;
     }
 
     @Override
     public boolean remove(int index) {
-        unLink(getAt(index));
+        remove(find(index));
         return true;
     }
 
     @Override
     public boolean remove(E element) {
-        return false;
+        return remove(goTo(element));
     }
 
     @Override
     public int size() {
-        return size;
+        return count;
     }
 
     @Override
     public void set(int index, E element) {
-
+        Node<E> curr = find(index);
+        curr.element = element;
     }
-
-    @Override
-    public IterableInterface<E> interator(){
-
-        return this;
+    public String toString(){
+        String s = "[";
+        Node<E> curr = head;
+        while (curr != null){
+            s += curr.element;
+            if(curr.next != null){
+                s += ", ";
+            }
+            curr = curr.next;
+        }
+        s += "]";
+        return s;
     }
 }
