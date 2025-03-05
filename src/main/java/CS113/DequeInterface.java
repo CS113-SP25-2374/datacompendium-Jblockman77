@@ -1,19 +1,23 @@
 package CS113;
 
 public interface DequeInterface <E> {
+
+    boolean offerFirst(E element);
+
+    boolean offerLast(E element);
     /**
      * Inserts at the beginning of the collection
      *
      * @param element
      */
-    void addFirst(E element);
+    boolean addFirst(E element);
 
     /**
      * Inserts at the end of the collection
      *
      * @param element
      */
-    void addLast(E element);
+    boolean addLast(E element);
 
     /**
      * Removes the first element of the collection

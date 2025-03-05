@@ -9,24 +9,29 @@ public class Main {
         Stack<Integer> stack = new Stack<>();
         StackRL<Integer> myStack = new StackRL<>();
         QueueRL<Integer> myQueue = new QueueRL<>();
-        Deque<Integer> numbers = new ArrayDeque<>();
+        DequeueArrayRL<Integer> numbers = new DequeueArrayRL<>();
+
+        System.out.println(numbers);
+        System.out.println(numbers.pollFirst());
 
         for(int i =0; i<10; i++){
             testArray.add(i);
             ourList.add(i);
             stack.push(i);
-            numbers.add(i);
+            numbers.addFirst(i);
             myStack.push(i);
             myQueue.push(i);
         }
 
-        System.out.println(myQueue);
-        myQueue.pop();
-        System.out.println(myQueue);
-        System.out.println(myQueue.peek());
-        System.out.println(myQueue.size());
-        System.out.println(myQueue.pop());
-        System.out.println(myQueue);
+        System.out.println(numbers);
+        numbers.pollLast();
+        System.out.println(numbers);
+        System.out.println(numbers.peekLast());
+        System.out.println(numbers);
+        System.out.println(numbers.size());
+        System.out.println(numbers);
+        System.out.println(numbers.pollFirst());
+        System.out.println(numbers);
 
 
 
