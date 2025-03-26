@@ -15,11 +15,12 @@ public class DequeueArrayRL<E> implements DequeInterface<E>{
         size = 0;
     }
     private void resize(int size){
-        E[] newArray = (E[]) new Object[size];
         if(array == null){
+            E[] newArray = (E[]) new Object[size];
             array = newArray;
             return;
         }
+        E[] newArray = (E[]) new Object[size];
         if(size < array.length){
             throw new IndexOutOfBoundsException();
         }
@@ -28,8 +29,8 @@ public class DequeueArrayRL<E> implements DequeInterface<E>{
         }
         int difference = (newArray.length) - array.length;
         if(first > last){
-            for(int i= array.length-1; i > array.length - first; i--){
-                newArray[i+difference] = array[i];
+            for(int i= array.length-1; i > first + difference; i--){
+                newArray[i] = array[i-difference];
             }
         }
         array = newArray;
@@ -54,44 +55,44 @@ public class DequeueArrayRL<E> implements DequeInterface<E>{
 
     @Override
     public boolean addFirst(E element) {
+        if (size == array.length - 1) {
+            resize(array.length * 2);
+        }
+
+
         if(size == 0){
             first = last = 0;
             array[first] = element;
             size++;
-            return true;
         }
-        if(size == array.length){
-            resize(size*2);
+        else {
+            first--;
+            if (first < 0) {
+                first = array.length - 1;
+            }
+            array[first] = element;
+            size++;
         }
-
-        first--;
-        if(first < 0){
-            first = array.length - 1;
-        }
-        array[first] = element;
-        size++;
         return true;
-
     }
 
     @Override
     public boolean addLast(E element) {
-        if(size == 0){
-            first = last = 0;
-            array[last] = element;
-            size++;
-            return true;
-        }
         if(size == array.length){
             resize(size*2);
         }
-
-        last++;
-        if(last >= array.length){
-            last = 0;
+        if (last == -1) {
+            first = last = 0;
+            array[last] = element;
+            size++;
+        } else {
+            last++;
+            if (last > array.length - 1) {
+                last = 0;
+            }
+            array[last] = element;
+            size++;
         }
-        array[last] = element;
-        size++;
         return true;
     }
 
@@ -149,7 +150,11 @@ public class DequeueArrayRL<E> implements DequeInterface<E>{
 
     @Override
     public E pollFirst() {
-        return null;
+        try {
+            return removeFirst();
+        } catch (NoSuchElementException e){
+            return null;
+        }
     }
 
     @Override

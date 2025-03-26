@@ -9,29 +9,20 @@ public class Main {
         Stack<Integer> stack = new Stack<>();
         StackRL<Integer> myStack = new StackRL<>();
         QueueRL<Integer> myQueue = new QueueRL<>();
-        DequeueArrayRL<Integer> numbers = new DequeueArrayRL<>();
-
-        System.out.println(numbers);
-        System.out.println(numbers.pollFirst());
+        DequeueArrayRL<Integer> myDeque = new DequeueArrayRL<>();
+        BinarySearchTreeRL<Integer> numbers = new BinarySearchTreeRL<Integer>();
 
         for(int i =0; i<10; i++){
             testArray.add(i);
             ourList.add(i);
             stack.push(i);
-            numbers.addFirst(i);
+            numbers.insert(i);
             myStack.push(i);
             myQueue.push(i);
         }
 
         System.out.println(numbers);
-        numbers.pollLast();
-        System.out.println(numbers);
-        System.out.println(numbers.peekLast());
-        System.out.println(numbers);
-        System.out.println(numbers.size());
-        System.out.println(numbers);
-        System.out.println(numbers.pollFirst());
-        System.out.println(numbers);
+        System.out.println(numbers.contains(0));
 
 
 
