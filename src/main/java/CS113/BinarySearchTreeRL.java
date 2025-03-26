@@ -67,6 +67,13 @@ public class BinarySearchTreeRL<E extends Comparable<E>> implements BinarySearch
             replace.right = node.right;
             return replace;
         }
+        if (node.element.compareTo(value) > 0) {
+            node.left = deleteRecursive(node.left, value);
+        }
+        if(node.element.compareTo(value) < 0){
+            node.right=deleteRecursive(node.right, value);
+        }
+        return node;
     }
 
     @Override
