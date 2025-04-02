@@ -1,12 +1,12 @@
 package CS113;
 
 public class BinarySearchTreeRL<E extends Comparable<E>> implements BinarySearchTree<E>{
-    private class Node<E>{
-        private E element;
-        private Node<E> right;
-        private Node<E> left;
+    protected class Node<E>{
+        E element;
+        Node<E> right;
+        Node<E> left;
         private Node<E> root;
-        private Node(E element){
+        Node(E element){
             this.element = element;
         }
     }
@@ -139,7 +139,7 @@ public class BinarySearchTreeRL<E extends Comparable<E>> implements BinarySearch
 
     @Override
     public int height() {
-        return 0;
+        return heightRecursive(rootNode);
     }
 
     @Override

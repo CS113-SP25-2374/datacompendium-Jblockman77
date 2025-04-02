@@ -10,20 +10,19 @@ public class Main {
         StackRL<Integer> myStack = new StackRL<>();
         QueueRL<Integer> myQueue = new QueueRL<>();
         DequeueArrayRL<Integer> myDeque = new DequeueArrayRL<>();
-        BinarySearchTreeRL<Integer> numbers = new BinarySearchTreeRL<Integer>();
+        BinarySearchTreeRL<Integer> myBST = new BinarySearchTreeRL<Integer>();
+        AVLBinarySearchTreeRL<Integer> numbers = (AVLBinarySearchTreeRL<Integer>) myBST;
 
         for(int i =0; i<10; i++){
-            testArray.add(i);
-            ourList.add(i);
-            stack.push(i);
+            //testArray.add(i);
+            //ourList.add(i);
+            //stack.push(i);
             numbers.insert(i);
-            myStack.push(i);
-            myQueue.push(i);
+            //myStack.push(i);
+            //myQueue.push(i);
         }
 
         System.out.println(numbers);
-        System.out.println(numbers.contains(0));
-        System.out.println(numbers.delete(4));
         System.out.println(numbers);
 
 
