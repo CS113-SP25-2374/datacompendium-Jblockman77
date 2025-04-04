@@ -9,7 +9,7 @@ public class Main {
         Stack<Integer> stack = new Stack<>();
         StackRL<Integer> myStack = new StackRL<>();
         QueueRL<Integer> myQueue = new QueueRL<>();
-        DequeueArrayRL<Integer> myDeque = new DequeueArrayRL<>();
+        ArrayDequeRL<Integer> myDeque = new ArrayDequeRL<>();
         BinarySearchTreeRL<Integer> myBST = new BinarySearchTreeRL<Integer>();
         AVLBinarySearchTreeRL<Integer> numbers = (AVLBinarySearchTreeRL<Integer>) myBST;
 
