@@ -85,7 +85,7 @@ public class ArrayListRL<E> implements ListInterface<E>{
             for(int i = index; i<size-1; i++){
                 array[i] = array[i+1];
             }
-            array[size] = null;
+            array[size-1] = null;
             size--;
             return true;
         }
