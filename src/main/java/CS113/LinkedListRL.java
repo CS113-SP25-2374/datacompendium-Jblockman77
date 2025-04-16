@@ -10,7 +10,7 @@ public class LinkedListRL<E> implements ListInterface<E>{
         }
     }
 
-    private class Iterator<E> implements IteratorInterface<E> {
+    private class Iterator<E> implements ListIteratorInterface<E> {
         private Node<E> curr;
         private LinkedListRL<E> linkedListRL;
 
