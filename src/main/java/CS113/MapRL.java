@@ -1,6 +1,5 @@
 package CS113;
 
-import java.lang.classfile.attribute.LineNumberTableAttribute;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -113,9 +112,9 @@ public class MapRL<K,V> implements MapInterface<K, V>{
                 return value;
             }
         }
+        bucket.addLast(new Entry<>(key, value));
         count++;
         if(count > capacityFactor){
-            bucket.addLast(new Entry<>(key, value));
             rehash();
         }
         return value;
@@ -161,12 +160,17 @@ public class MapRL<K,V> implements MapInterface<K, V>{
 
         LinkedList<Entry<K, V>>[] newBuckets = buckets;
         buckets = new LinkedList[buckets.length * 2];
-
+        for(int i = 0; i < buckets.length; i++){
+            buckets[i] = new LinkedList<>();
+        }
+        capacityFactor = (int)((double) buckets.length * 0.75);
         for(LinkedList<Entry<K, V>> bucket : buckets){
             ListIteratorInterface<Entry<K,V>> iterator = bucket.iterator();
             while(iterator.hasNext()){
                 Entry<K,V> temp = iterator.next();
-                put(temp.getKey(), temp.getValue());
+                int index = getHash(temp.getKey());
+                LinkedList<Entry<K, V>> newBucket = buckets[index];
+                newBucket.addLast(temp);
             }
         }
     }
