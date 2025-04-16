@@ -36,12 +36,13 @@ public class MapRL<K,V> implements MapInterface<K, V>{
 
     LinkedList<Entry<K,V>>[] buckets = new LinkedList[BUCKET_COUNT];
     int count = 0;
+    int capacityFactor = 0;
 
     public MapRL(){
         for(int i = 0; i < buckets.length; i++){
             buckets[i] = new LinkedList<>();
         }
-
+        capacityFactor = (int)((double) buckets.length * .75);
         String[] names = {"Noah", "Noah", "Derek", "Kyle", "Rafail", "Frankie", "KC", "Katanu", "ProfessorHorton"};
         for(String name : names){
             long hashCode = Integer.toUnsignedLong(name.hashCode());
@@ -112,7 +113,11 @@ public class MapRL<K,V> implements MapInterface<K, V>{
                 return value;
             }
         }
-        bucket.addLast(new Entry<>(key, value));
+        count++;
+        if(count > capacityFactor){
+            bucket.addLast(new Entry<>(key, value));
+            rehash();
+        }
         return value;
     }
 
@@ -127,6 +132,7 @@ public class MapRL<K,V> implements MapInterface<K, V>{
             if(entry.key == key){
                 V temp = entry.getValue();
                 iterator.remove();
+                count--;
                 return temp;
             }
         }
@@ -149,6 +155,20 @@ public class MapRL<K,V> implements MapInterface<K, V>{
             }
         }
         return returnValue;
+    }
+
+    void rehash(){
+
+        LinkedList<Entry<K, V>>[] newBuckets = buckets;
+        buckets = new LinkedList[buckets.length * 2];
+
+        for(LinkedList<Entry<K, V>> bucket : buckets){
+            ListIteratorInterface<Entry<K,V>> iterator = bucket.iterator();
+            while(iterator.hasNext()){
+                Entry<K,V> temp = iterator.next();
+                put(temp.getKey(), temp.getValue());
+            }
+        }
     }
 
     @Override
