@@ -13,6 +13,7 @@ public class LinkedListRL<E> implements ListInterface<E>{
     private class Iterator<E> implements ListIteratorInterface<E> {
         private Node<E> curr;
         private LinkedListRL<E> linkedListRL;
+        int index = 0;
 
         private Iterator(LinkedListRL<E> linkedListRL){
             this.linkedListRL = linkedListRL;
@@ -20,8 +21,18 @@ public class LinkedListRL<E> implements ListInterface<E>{
         }
 
         @Override
+        public void add(E element) {
+
+        }
+
+        @Override
         public boolean hasNext() {
             return curr.next != null;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return false;
         }
 
         @Override
@@ -31,8 +42,28 @@ public class LinkedListRL<E> implements ListInterface<E>{
         }
 
         @Override
+        public E previous() {
+            return null;
+        }
+
+        @Override
         public void remove() {
             linkedListRL.remove((LinkedListRL<E>.Node<E>) curr);
+        }
+
+        @Override
+        public void set(E element) {
+
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
         }
     }
 
@@ -162,6 +193,12 @@ public class LinkedListRL<E> implements ListInterface<E>{
         Node<E> curr = find(index);
         curr.element = element;
     }
+
+    //public ListIteratorInterface<E> iterator() {
+        //iterator.current = null;
+        //return iterator;
+    //}
+
     public String toString(){
         String s = "[";
         Node<E> curr = head;

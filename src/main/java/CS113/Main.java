@@ -14,6 +14,16 @@ public class Main {
         //AVLBinarySearchTreeRL<Integer> numbers = (AVLBinarySearchTreeRL<Integer>) myBST;
         HeapRL<Integer> num = new HeapRL<>();
 
+        ArrayList<Integer> hat = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i<20; i++){
+            hat.add(random.nextInt(100));
+        }
+        SortingRL<Integer> sortingHat = new SortingRL<>();
+        System.out.println(hat);
+        hat = sortingHat.quickSort(hat);
+        System.out.println(hat);
+
         for(int i =0; i<10; i++){
             //testArray.add(i);
             //ourList.add(i);
@@ -21,13 +31,13 @@ public class Main {
             //numbers.insert(i);
             //myStack.push(i);
             //myQueue.push(i);
-            num.add(i);
+            //num.add(i);
         }
 
-        System.out.println(num);
-        //num.add(-1);
-        num.poll();
-        System.out.println(num);
+//        System.out.println(num);
+//        //num.add(-1);
+//        num.poll();
+//        System.out.println(num);
 
 
 
