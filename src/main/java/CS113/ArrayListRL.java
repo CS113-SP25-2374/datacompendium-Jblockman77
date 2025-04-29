@@ -1,6 +1,8 @@
 package CS113;
 
-public class ArrayListRL<E> implements ListInterface<E>{
+import Interfaces.ListInterface;
+
+public class ArrayListRL<E> implements ListInterface<E> {
     final static int INITIAL_CAPACITY = 10;
     private E[] array;
     private int size;

@@ -1,6 +1,8 @@
 package CS113;
 
-public class QueueRL<E> implements QueueInterface<E>{
+import Interfaces.QueueInterface;
+
+public class QueueRL<E> implements QueueInterface<E> {
     private class Node<E>{
         private E element;
         private Node<E> next;

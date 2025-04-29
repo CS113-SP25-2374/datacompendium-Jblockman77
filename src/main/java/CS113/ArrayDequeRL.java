@@ -1,5 +1,7 @@
 package CS113;
 
+import Interfaces.DequeInterface;
+
 public class ArrayDequeRL<E> implements DequeInterface<E> {
     E[] array;
     int first;

@@ -1,6 +1,8 @@
 package CS113;
 
-public class StackRL<E> implements StackInterface<E>{
+import Interfaces.StackInterface;
+
+public class StackRL<E> implements StackInterface<E> {
     private class Node<E>{
         private E element;
         private Node<E> next;

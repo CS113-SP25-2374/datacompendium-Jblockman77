@@ -1,6 +1,8 @@
 package CS113;
 
-public class BinarySearchTreeRL<E extends Comparable<E>> implements BinarySearchTree<E>{
+import Interfaces.BinarySearchTree;
+
+public class BinarySearchTreeRL<E extends Comparable<E>> implements BinarySearchTree<E> {
     protected class Node<E>{
         E element;
         Node<E> right;

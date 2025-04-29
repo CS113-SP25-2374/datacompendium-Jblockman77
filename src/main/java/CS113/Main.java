@@ -1,5 +1,7 @@
 package CS113;
 
+import Interfaces.ListInterface;
+
 import java.util.*;
 
 public class Main {
@@ -11,7 +13,7 @@ public class Main {
         QueueRL<Integer> myQueue = new QueueRL<>();
         ArrayDequeRL<Integer> myDeque = new ArrayDequeRL<>();
         BinarySearchTreeRL<Integer> myBST = new BinarySearchTreeRL<Integer>();
-        //AVLBinarySearchTreeRL<Integer> numbers = (AVLBinarySearchTreeRL<Integer>) myBST;
+    //    AVLBinarySearchTreeRL<Integer> numbers = (AVLBinarySearchTreeRL<Integer>) myBST;
         HeapRL<Integer> num = new HeapRL<>();
 
         ArrayList<Integer> hat = new ArrayList<>();
@@ -25,13 +27,13 @@ public class Main {
         System.out.println(hat);
 
         for(int i =0; i<10; i++){
-            //testArray.add(i);
-            //ourList.add(i);
-            //stack.push(i);
+            testArray.add(i);
+            ourList.add(i);
+            stack.push(i);
             //numbers.insert(i);
-            //myStack.push(i);
-            //myQueue.push(i);
-            //num.add(i);
+            myStack.push(i);
+            myQueue.push(i);
+            num.add(i);
         }
 
 //        System.out.println(num);

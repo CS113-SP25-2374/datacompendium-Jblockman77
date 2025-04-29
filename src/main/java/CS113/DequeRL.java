@@ -1,6 +1,8 @@
 package CS113;
 
-public class DequeRL<E> implements DequeInterface<E>{
+import Interfaces.DequeInterface;
+
+public class DequeRL<E> implements DequeInterface<E> {
     private class Node<E>{
         private E element;
         private Node<E> next;

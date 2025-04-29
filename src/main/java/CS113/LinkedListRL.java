@@ -1,170 +1,274 @@
 package CS113;
 
-public class LinkedListRL<E> implements ListInterface<E>{
-    private class Node<E>{
+import Interfaces.DequeInterface;
+import Interfaces.ListInterface;
+import Interfaces.ListIterableInterface;
+import Interfaces.ListIteratorInterface;
+
+public class LinkedListRL<E> implements ListInterface<E>, ListIterableInterface<E>, DequeInterface<E> {
+
+    private class Node<E> {
         private E element;
         private Node<E> next;
         private Node<E> prev;
-        private Node(E element){
-            this.element = element;
-        }
+
+        private Node(E element) { this.element = element; }
     }
 
     private class Iterator<E> implements ListIteratorInterface<E> {
-        private Node<E> curr;
-        private LinkedListRL<E> linkedListRL;
+        private Node<E> current;
+        LinkedListRL<E> list;
         int index = 0;
 
-        private Iterator(LinkedListRL<E> linkedListRL){
-            this.linkedListRL = linkedListRL;
-            curr = (Node<E>) linkedListRL.head;
+        private Iterator(LinkedListRL<E> list) {
+            this.list = list;
         }
 
         @Override
         public void add(E element) {
-
+            Node<E> node = new Node<>(element);
+            list.linkNode((LinkedListRL<E>.Node<E>) node, (LinkedListRL<E>.Node<E>) current);
         }
 
         @Override
         public boolean hasNext() {
-            return curr.next != null;
+            if (current == null) return list.head != null;
+            return current.next != null;
         }
 
         @Override
         public boolean hasPrevious() {
-            return false;
+            if (current == null) return list.tail != null;
+            return current.prev != null;
         }
 
         @Override
         public E next() {
-            curr = curr.next;
-            return curr.element;
+            if (current == null) current = (Node<E>) list.head;
+            else {
+                current = current.next;
+                index++;
+            }
+            return current.element;
         }
 
         @Override
         public E previous() {
-            return null;
+            if (current == null) current = (Node<E>) list.tail;
+            else {
+                current = current.prev;
+                index--;
+            }
+            return current.element;
         }
 
         @Override
         public void remove() {
-            linkedListRL.remove((LinkedListRL<E>.Node<E>) curr);
+            Node<E> curr = current.next;
+            list.unlinkNode((LinkedListRL<E>.Node<E>) current);
+            current = curr;
         }
 
         @Override
         public void set(E element) {
-
+            current.element = element;
         }
 
         @Override
         public int nextIndex() {
-            return 0;
+            return index + 1;
         }
 
         @Override
         public int previousIndex() {
-            return 0;
+            return index - 1;
         }
     }
 
     private Node<E> head;
     private Node<E> tail;
-    private int count;
+    private int size;
+    private final Iterator<E> iterator = new Iterator<>(this);
 
-    @Override
-    public boolean add(E element) {
-        Node<E> newNode = new Node<>(element);
-            if(head == null){
-                head = newNode;
-            }else{
-                tail.next = newNode;
-                newNode.prev = tail;
-            }
-        tail = newNode;
-        count++;
-        return true;
-
-    }
-
-    @Override
-    public void add(int index, E element) {
-        Node<E> curr = find(index);
-            Node<E> newNode = new Node<>(element);
-            if(curr == head){
-                head = newNode;
-            } else{
-                curr.prev.next = newNode;
-            }
-        newNode.next = curr;
-        count++;
-        }
-
-    @Override
-    public void clear() {
-        while(head != null) {
-            remove(0);
-        }
-        count = 0;
-    }
-
-    @Override
-    public boolean contains(E element) {
-        return goTo(element) != null;
-    }
-
-    @Override
-    public int indexOf(Object object) {
+    private Node<E> iterateTo(E element) {
         Node<E> curr = head;
-        int i =0;
-            while(curr != null){
-                if(curr.element.equals(object)){
-                    return i;
-                }
-                i++;
-                curr = curr.next;
-            }
-
-        return -1;
-    }
-
-    private Node<E> find(int index) {
-        Node<E> curr = head;
-        int i = 0;
-        while (++i <= index && curr != null) {
-            curr = curr.next;
-        }
-        return curr;
-    }
-
-    private Node<E> goTo(E element){
-        Node<E> curr = head;
-        while (curr != null){
-            if(curr.element.equals(element)){
-                return curr;
-            }
+        while (curr != null) {
+            if (curr.element.equals(element)) return curr;
             curr = curr.next;
         }
         return null;
     }
 
-    private boolean remove(Node<E> curr){
-        if(curr.prev != null){
-            curr.prev.next = curr.next;
-        }else {
-            head = curr.next;
+    private Node<E> iterateTo(int index) {
+        int i = 0;
+        Node<E> curr = head;
+        while (curr != null) {
+            if (i == index) return curr;
+            i++;
+            curr = curr.next;
         }
-        if(curr.next != null){
-            curr.next.prev = curr.prev;
-        }else {
-            tail = curr.prev;
+        return null;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        int index = 0;
+        Node<E> curr = head;
+        while (curr != null) {
+            if (curr.element.equals(o)) return index;
+            index++;
+            curr = curr.next;
         }
-        count--;
+        return -1;
+    }
+
+    private void unlinkNode(Node<E> node) {
+        if (node.prev != null) {
+            node.prev.next = node.next;
+        }
+
+        if (node.next != null) {
+            node.next.prev = node.prev;
+        }
+
+        if (head == node) {
+            head = node.next;
+        }
+
+        if (tail == node) {
+            tail = node.prev;
+        }
+
+        size--;
+    }
+
+    private void linkPrev(Node<E> node, Node<E> curr) {
+        if (curr != null && curr.prev != null) {
+            linkNode(node, curr.prev);
+        } else { // head of the list
+            node.next = head;
+            node.prev = null;
+            head = node;
+            if (node.next != null) node.next.prev = node;
+            size++;
+        }
+    }
+
+    private void linkNode(Node<E> node, Node<E> curr) {
+        if (curr == null) {
+            head = tail = node;
+        } else {
+            node.next = curr.next;
+            node.prev = curr;
+            curr.next = node;
+            if (node.next != null) {
+                node.next.prev = node;
+            }
+            if (tail == curr) {
+                tail = node;
+            }
+        }
+
+        size++;
+    }
+
+    @Override
+    public boolean add(E element) {
+        Node<E> node = new Node<>(element);
+
+        if (head == null) {
+            linkNode(node, tail);
+            head = node;
+        } else {
+            linkNode(node, tail);
+        }
+
         return true;
     }
 
     @Override
+    public void add(int index, E element) {
+        Node<E> node = new Node<>(element);
+        Node<E> curr = iterateTo(index-1);
+        linkNode(node, curr);
+    }
+
+    @Override
+    public void clear() {
+        while (head != null) {
+            unlinkNode(head);
+        }
+    }
+
+    @Override
+    public boolean contains(E element) {
+        return indexOf(element) != -1;
+    }
+
+    @Override
     public E get(int index) {
-        return find(index).element;
+        Node<E> node = iterateTo(index);
+        return node != null ? node.element : null;
+    }
+
+    @Override
+    public boolean offerFirst(E element) {
+        addFirst(element);
+        return true;
+    }
+
+    @Override
+    public boolean offerLast(E element) {
+        addLast(element);
+        return true;
+    }
+
+    @Override
+    public boolean addFirst(E element) {
+        Node<E> node = new Node<>(element);
+        linkPrev(node, head);
+        return true;
+    }
+
+    @Override
+    public boolean addLast(E element) {
+        Node<E> node = new Node<>(element);
+        linkNode(node, tail);
+        return true;
+    }
+
+    @Override
+    public E removeFirst() {
+        return pollFirst();
+    }
+
+    @Override
+    public E removeLast() {
+        return pollLast();
+    }
+
+    @Override
+    public E peekFirst() {
+        return head.element;
+    }
+
+    @Override
+    public E peekLast() {
+        return tail.element;
+    }
+
+    @Override
+    public E pollFirst() {
+        Node<E> curr = head;
+        unlinkNode(curr);
+        return curr.element;
+    }
+
+    @Override
+    public E pollLast() {
+        Node<E> curr = tail;
+        unlinkNode(curr);
+        return curr.element;
     }
 
     @Override
@@ -174,42 +278,47 @@ public class LinkedListRL<E> implements ListInterface<E>{
 
     @Override
     public boolean remove(int index) {
-        remove(find(index));
+        Node<E> node = iterateTo(index);
+        if (node != null) unlinkNode(node);
         return true;
     }
 
     @Override
     public boolean remove(E element) {
-        return remove(goTo(element));
+        Node<E> node = iterateTo(element);
+        if (node != null) unlinkNode(node);
+        return true;
     }
 
     @Override
     public int size() {
-        return count;
+        return size;
     }
 
     @Override
     public void set(int index, E element) {
-        Node<E> curr = find(index);
-        curr.element = element;
+        Node<E> node = iterateTo(index);
+        if (node != null) node.element = element;
     }
 
-    //public ListIteratorInterface<E> iterator() {
-        //iterator.current = null;
-        //return iterator;
-    //}
+    @Override
+    public ListIteratorInterface<E> iterator() {
+        iterator.current = null;
+        return iterator;
+    }
 
-    public String toString(){
-        String s = "[";
-        Node<E> curr = head;
-        while (curr != null){
-            s += curr.element;
-            if(curr.next != null){
-                s += ", ";
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<E> node = head;
+        while (node != null) {
+            sb.append(node.element);
+            if (node.next != null) {
+                sb.append(", ");
             }
-            curr = curr.next;
+            node = node.next;
         }
-        s += "]";
-        return s;
+        sb.append("]");
+        return sb.toString();
     }
 }
