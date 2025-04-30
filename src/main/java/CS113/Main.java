@@ -22,9 +22,22 @@ public class Main {
             hat.add(random.nextInt(100));
         }
         SortingRL<Integer> sortingHat = new SortingRL<>();
-        System.out.println(hat);
-        hat = sortingHat.quickSort(hat);
-        System.out.println(hat);
+
+        GraphRL<String> stuff = new GraphRL<>();
+        stuff.add("A");
+        stuff.add("B");
+        stuff.add("C");
+        stuff.add("D");
+        stuff.add("E");
+        stuff.edge("A", "B", false);
+        stuff.edge("B", "C", false);
+        stuff.printGraph();
+
+
+
+//        System.out.println(hat);
+//        hat = sortingHat.quickSort(hat);
+//        System.out.println(hat);
 
         for(int i =0; i<10; i++){
             testArray.add(i);
